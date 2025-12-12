@@ -1,0 +1,63 @@
+<div id="sheet-table"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  google.charts.load('current', {packages:['table']});
+  google.charts.setOnLoadCallback(drawTable);
+
+  function drawTable() {
+    var query = new google.visualization.Query(
+      'https://docs.google.com/spreadsheets/d/1IBVyhyAM5JkS706PTD6DG7ZCQ-k2sQkZMZnxAqOQ7i4/gviz/tq?gid=0&headers=1&tq=SELECT B,C,D,E'
+    );
+
+    query.send(function (response) {
+      var data = response.getDataTable();
+      var table = new google.visualization.Table(document.getElementById('sheet-table'));
+
+      table.draw(data, {
+        showRowNumber: false,
+        width: '100%',
+        height: 'auto',
+        allowHtml: true,
+        alternatingRowStyle: false
+      });
+    });
+  }
+</script>
+
+<style>
+/* Base Table Style */
+#sheet-table table{font-family:Poppins, Sans-Serif;}
+#sheet-table table {
+border: none !important;
+outline: none !important;
+}
+
+/* Colours */
+#sheet-table th{background-color: beige;}
+
+
+#sheet-table td, #sheet-table th{
+border: none !important;
+padding:6px 14px 6px 14px;
+vertical-align:top;
+}
+#sheet-table th {
+font-weight:600;
+text-align:left;
+}
+#sheet-table td{
+font-weight:300;
+}
+
+/* Column Specifics */
+#sheet-table table td:nth-child(4), #sheet-table table th:nth-child(4) {text-align: center !important;}
+#sheet-table table td:nth-child(2), #sheet-table table th:nth-child(2) {width: 60%;text-align: justify !important;}
+#sheet-table table td:nth-child(3), #sheet-table table th:nth-child(3) {text-align: center !important;}
+
+@media (width < 500px){
+#sheet-table table td:nth-child(2), #sheet-table table th:nth-child(2){display:none;}
+#sheet-table table td:nth-child(4), #sheet-table table th:nth-child(4){display:none;}
+#sheet-table table td{font-size:85%;}
+}
+</style>
