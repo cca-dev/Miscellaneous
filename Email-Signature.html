@@ -1,10 +1,16 @@
 <table style="font-family: Poppins, Verdana, sans-serif; font-size: 10pt; color: #333333; width: 500px;" cellpadding="0"
     cellspacing="0">
+    <!-- Attempt to load Poppins for Apple Mail / iOS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    </style>
     <tr>
         <td style="border-left: 4px solid #44b0ec; padding-left: 15px; vertical-align: top;">
             <div style="margin-bottom: 8px;">
-                <strong style="font-size: 12pt; color: #202020;">Neil Moore</strong><br>
-                <span style="color: #44b0ec; font-weight: bold;">Chairperson / IT Manager</span>
+                <!-- DYNAMIC NAME -->
+                <strong style="font-size: 12pt; color: #202020;">#GivenName# #FamilyName#</strong><br>
+                <!-- DYNAMIC TITLE -->
+                <span style="color: #44b0ec; font-weight: bold;">#Title#</span>
             </div>
             <div style="font-size: 9pt; line-height: 1.4em; color: #3a4f66;">
                 <strong>Castleland Community Centre</strong><br>
@@ -12,12 +18,16 @@
                 Barry, CF63 4JZ
             </div>
             <div style="margin-top: 8px; font-size: 9pt; line-height: 1.4em;">
+                <!-- STATIC PHONE (Change to #Phone# if users have direct lines) -->
                 <span style="color: #44b0ec; font-weight: bold;">T:</span> <a href="tel:01446701285"
                     style="color: #3a4f66; text-decoration: none;">01446 701285</a><br>
-                <span style="color: #44b0ec; font-weight: bold;">E:</span> <a href="mailto:admin@castlelandcentre.com"
-                    style="color: #3a4f66; text-decoration: none;">admin@castlelandcentre.com</a><br>
-                <span style="color: #44b0ec; font-weight: bold;">W:</span> <a href="https://www.castlelandcentre.com" target=_blank""
-                    style="color: #3a4f66; text-decoration: none;">www.castlelandcentre.com</a>
+
+                <!-- DYNAMIC EMAIL -->
+                <span style="color: #44b0ec; font-weight: bold;">E:</span> <a href="mailto:#Email#"
+                    style="color: #3a4f66; text-decoration: none;">#Email#</a><br>
+
+                <span style="color: #44b0ec; font-weight: bold;">W:</span> <a href="https://www.castlelandcentre.com"
+                    target="_blank" style="color: #3a4f66; text-decoration: none;">www.castlelandcentre.com</a>
             </div>
             <div style="margin-top: 10px;">
                 <a href="https://www.facebook.com/castlelandvenue"
@@ -33,9 +43,10 @@
                         height="20" style="border:0;"></a>
             </div>
             <div style="margin-top: 8px;">
-                <a href="https://castlelandcentre.com/book?&utm_source=email" target="_blank"><img src="https://dicdevelopmenttrust.com/wp-content/uploads/2026/02/book-online.png"
-                    alt="Logo" height="44" border="0" style="border:0px;vertical-align:middle;width:auto;height:44px"
-                    class="CToWUd" data-bit="iit"></a>
+                <a href="https://castlelandcentre.com/book?&utm_source=email" target="_blank"><img
+                        src="https://dicdevelopmenttrust.com/wp-content/uploads/2026/02/book-online.png"
+                        alt="Book Online" height="44" border="0"
+                        style="border:0px;vertical-align:middle;width:auto;height:44px"></a>
             </div>
         </td>
     </tr>
