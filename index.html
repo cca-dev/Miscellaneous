@@ -420,7 +420,7 @@
   function handleResponse(data) {
     const status = data.status || 'error';
 
-    if (status === 'access denied') {
+    if (status === 'no cart') {
       markInvalid('cartId');
       showBanner('error', '<strong>Cart not found</strong>No cart was found with that ID. Please double-check and try again.');
       return;
