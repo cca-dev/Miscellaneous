@@ -213,8 +213,8 @@
 <div class="wrap">
 
   <div class="header">
-    <p class="header-eyebrow">Castle Land Centre</p>
-    <h1>Bulk Time Updater</h1>
+    <p class="header-eyebrow">Castleland Centre</p>
+    <h1>Bulk Updater</h1>
   </div>
 
   <div class="card">
@@ -223,7 +223,7 @@
     <p class="section-label">Cart</p>
     <div class="field">
       <label for="cartId">Cart ID</label>
-      <input type="text" id="cartId" placeholder="Paste cart ID from Planyo" autocomplete="off" />
+      <input type="text" id="cartId" placeholder="Paste cart ID from Planyo without the C" autocomplete="off" />
     </div>
 
     <div class="divider"></div>
@@ -397,7 +397,7 @@
       try { data = await res.json(); } catch { /* non-JSON body */ }
 
       if (!res.ok) {
-        showBanner('error', `<strong>Server error (${res.status})</strong>Could not reach the update service. Please try again or contact support.`);
+        showBanner('error', `<strong>Server error (${res.status})</strong>Could not reach the update service. Please try again or contact it@castlelandcentre.com.`);
         setLoading(false);
         return;
       }
@@ -420,7 +420,7 @@
   function handleResponse(data) {
     const status = data.status || 'error';
 
-    if (status === 'no_cart') {
+    if (status === 'access denied') {
       markInvalid('cartId');
       showBanner('error', '<strong>Cart not found</strong>No cart was found with that ID. Please double-check and try again.');
       return;
