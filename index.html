@@ -454,6 +454,43 @@
     }
 
     showBanner('error', '<strong>Unexpected response</strong>Something went wrong. Please try again or contact it@castlelandcentre.com.');
+  }  function handleResponse(data) {
+    const status = data.status || 'error';
+ 
+    if (status === 'no_cart') {
+      markInvalid('cartId');
+      showBanner('error', '<strong>Cart not found</strong>No cart was found with that ID. Please double-check and try again.');
+      return;
+    }
+ 
+    if (status === 'conflict') {
+      const item = data.item || 'A booking in this cart';
+      const date = data.date || 'the requested time';
+      showBanner('warn',
+        `<strong>Time unavailable — no changes made</strong>` +
+        `${item} cannot be moved to ${date} as that slot is already taken. ` +
+        `No bookings have been changed.`
+      );
+      $('resetRow').classList.add('show');
+      return;
+    }
+ 
+    if (status === 'success') {
+      const roomName = $('room').options[$('room').selectedIndex].text;
+      const countLabel = typeof data.count === 'number'
+        ? `${data.count} booking${data.count !== 1 ? 's' : ''}`
+        : 'All bookings';
+      showBanner('success',
+        `<strong>Done — ${countLabel} updated</strong>` +
+        `${countLabel} in <strong>${roomName}</strong> have been moved to the new date and time.`
+      );
+      $('resetRow').classList.add('show');
+      ['cartId','room','startDate','startTime','endTime','recalcPrice','submitBtn']
+        .forEach(id => $(id).disabled = true);
+      return;
+    }
+ 
+    showBanner('error', '<strong>Unexpected response</strong>Something went wrong. Please try again or contact support.');
   }
 
   // ── Reset ────────────────────────────────────────────────
