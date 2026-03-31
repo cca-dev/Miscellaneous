@@ -369,23 +369,33 @@
     $(bannerMap[type]).classList.add('show');
   }
 
-  function validate() {
-    clearInvalid();
-    let ok = true;
-    ['cartId','room','startDate','startTime','endTime'].forEach(id => {
-      if (!$(id).value.trim()) { markInvalid(id); ok = false; }
-    });
-    if (!ok) {
-      showBanner('error', '<strong>Missing fields</strong>Please fill in all fields before submitting.');
-      return false;
-    }
-    if ($('endTime').value <= $('startTime').value) {
-      markInvalid('endTime');
-      showBanner('error', '<strong>Invalid time range</strong>End time must be after the start time.');
-      return false;
-    }
-    return true;
+function validate() {
+  clearInvalid();
+  let ok = true;
+  const startDateRequired = !$('onlyTimes').checked;
+  
+  ['cartId','room','startTime','endTime'].forEach(id => {
+    if (!$(id).value.trim()) { markInvalid(id); ok = false; }
+  });
+
+  // Exclude startDate validation if OnlyTimes is checked
+  if (startDateRequired && !$('startDate').value.trim()) {
+    markInvalid('startDate');
+    showBanner('error', '<strong>Missing field</strong>Please fill in the start date before submitting.');
+    ok = false;
   }
+
+  if (!ok) {
+    showBanner('error', '<strong>Missing fields</strong>Please fill in all fields before submitting.');
+    return false;
+  }
+  if ($('endTime').value <= $('startTime').value) {
+    markInvalid('endTime');
+    showBanner('error', '<strong>Invalid time range</strong>End time must be after the start time.');
+    return false;
+  }
+  return true;
+}
 
   // ── Submit ───────────────────────────────────────────────
   function setLoading(on) {
