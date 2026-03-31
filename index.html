@@ -245,6 +245,14 @@
 
     <div class="divider"></div>
 
+    <!-- Only times? -->
+    <div class="field">
+      <label class="checkbox-field" for="onlyTimes">
+        <input type="checkbox" id="onlyTimes" />
+        <span class="checkbox-label">Only Times</span>
+      </label>
+    </div>
+
     <!-- Date & Time -->
     <p class="section-label">New Date &amp; Time</p>
 
@@ -325,6 +333,20 @@
 
   buildTimeOptions('startTime');
   buildTimeOptions('endTime');
+
+  const onlyTimesCheckbox = document.getElementById('onlyTimes');
+
+  onlyTimesCheckbox.addEventListener('change', function() {
+    if (this.checked) {
+      $('startDate').disabled = true;
+      $('startDate').value = null;
+    } else {
+      $('startDate').disabled = false;
+      // If you want to show the date picker when the checkbox is unchecked, you can call the function that builds the time options here
+      buildTimeOptions('startTime');
+    }
+  });
+
 
   // ── Validation ───────────────────────────────────────────
   function clearInvalid() {
