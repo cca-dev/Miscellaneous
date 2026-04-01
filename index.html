@@ -406,13 +406,18 @@
   buildTimeOptions('startTime');
   buildTimeOptions('endTime');
 
-  // Only Times toggle — disables start date
-  $('onlyTimes').addEventListener('change', function disabledDate() {
+  function disableDate() {
+
     $('startDate').disabled = this.checked;
     if (this.checked) $('startDate').value = '';
     $('startDate').classList.remove('invalid');
-  });
-  disabledDate();
+
+  }
+
+    // Only Times toggle — disables start date
+  $('onlyTimes').addEventListener('change', disableDate());
+
+  disableDate()
 
   // ── Validation ───────────────────────────────────────────
   function clearInvalid() {
