@@ -365,8 +365,9 @@
     <table class="res-table">
       <thead>
         <tr>
-          <th>Reservation</th>
-          <th>New Date / Time</th>
+          <th>Booking ID</th>
+          <th>Original</th>
+          <th>New</th>
           <th>Result</th>
         </tr>
       </thead>
@@ -509,13 +510,33 @@
   // {
   //   "status": "complete",
   //   "reservations": [
-  //     { "ref": "12345", "datetime": "Tue 15 Apr 10:00–12:00", "result": "changed" },
-  //     { "ref": "12346", "datetime": "Tue 15 Apr 14:00–16:00", "result": "conflict", "reason": "Time not available" },
-  //     { "ref": "12347", "datetime": "Wed 16 Apr 10:00–12:00", "result": "changed", "warning": "Outside normal hours" }
+  //     {
+  //       "ref": "12345",
+  //       "original_start": "2026-04-14 10:00",
+  //       "original_end":   "2026-04-14 12:00",
+  //       "new_start":      "2026-04-15 11:00",
+  //       "new_end":        "2026-04-15 13:00",
+  //       "result":         "changed"           // or "conflict"
+  //       "reason":         "..."               // optional, on conflict
+  //       "warning":        "..."               // optional, on changed
+  //     }
   //   ]
   // }
   //
   // Also handles: { "status": "no_cart" }
+
+  // ── Date formatter: "2026-04-29 09:00" → "Tue 29 Apr, 09:00" ──
+  function fmtDateTime(str) {
+    if (!str) return '—';
+    // Replace space with T so all browsers parse it correctly
+    const d = new Date(str.replace(' ', 'T'));
+    if (isNaN(d)) return str;
+    const day  = d.toLocaleDateString('en-GB', { weekday: 'short' });
+    const date = d.getDate();
+    const mon  = d.toLocaleDateString('en-GB', { month: 'short' });
+    const time = str.slice(-5); // grab HH:MM directly from string
+    return `${day} ${date} ${mon}, ${time}`;
+  }
 
   function handleResponse(data) {
     const status = data.status || 'error';
@@ -566,10 +587,14 @@
         if (r.reason) note = `<div class="res-note">${r.reason}</div>`;
       }
 
+      const origTime = fmtDateTime(r.original_start) + (r.original_end ? '–' + r.original_end.slice(-5) : '');
+      const newTime  = fmtDateTime(r.new_start)      + (r.new_end      ? '–' + r.new_end.slice(-5)      : '');
+
       return `
         <tr>
           <td><div class="res-ref">${r.ref || '—'}</div></td>
-          <td><div class="res-datetime">${r.datetime || '—'}</div></td>
+          <td><div class="res-datetime">${origTime}</div></td>
+          <td><div class="res-datetime">${newTime}</div></td>
           <td>${badge}${note}</td>
         </tr>`;
     }).join('');
