@@ -366,8 +366,10 @@
       <thead>
         <tr>
           <th>Booking ID</th>
-          <th>Original</th>
-          <th>New</th>
+          <th>Original Room</th>
+          <th>Original Time</th>
+          <th>New Room</th>
+          <th>New Time</th>
           <th>Result</th>
         </tr>
       </thead>
@@ -525,17 +527,56 @@
   //
   // Also handles: { "status": "no_cart" }
 
-  // ── Date formatter: "2026-04-29 09:00" → "Tue 29 Apr, 09:00" ──
+  // ── Room ID → name lookup ────────────────────────────────
+  const ROOMS = {
+    "206667": "Party",
+    "104777": "Pendragon",
+    "105032": "Camelot",
+    "105033": "Lancelot",
+    "105572": "Galahad",
+    "105573": "Merlin",
+    "123941": "Miscellaneous"
+  };
+
+  function roomName(id) {
+    return ROOMS[String(id)] || id || '—';
+  }
+
+  // ── Date formatter ───────────────────────────────────────
+  // Handles "2026-04-29 09:00" and "2026-04-29 10:59:59"
+  // Returns "Tue 29 Apr, 09:00"
   function fmtDateTime(str) {
     if (!str) return '—';
-    // Replace space with T so all browsers parse it correctly
-    const d = new Date(str.replace(' ', 'T'));
-    if (isNaN(d)) return str;
+    const clean = str.trim();
+    const d = new Date(clean.replace(' ', 'T'));
+    if (isNaN(d)) return clean;
     const day  = d.toLocaleDateString('en-GB', { weekday: 'short' });
     const date = d.getDate();
     const mon  = d.toLocaleDateString('en-GB', { month: 'short' });
-    const time = str.slice(-5); // grab HH:MM directly from string
-    return `${day} ${date} ${mon}, ${time}`;
+    // Grab HH:MM from the string directly — avoids timezone shifting
+    const timePart = clean.substring(11, 16);
+    return `${day} ${date} ${mon}, ${timePart}`;
+  }
+
+  // Formats a start+end pair as "Tue 29 Apr, 09:00–10:00"
+  // Planyo end times come as HH:59:59 (internal format) — round up to next hour for display
+  function fmtRange(startStr, endStr) {
+    const start = fmtDateTime(startStr);
+    if (!endStr) return start;
+    // If end seconds are :59, treat as end of that hour → display next clean hour
+    const endClean = endStr.trim();
+    let endTime;
+    if (endClean.slice(-2) === '59' && endClean.length > 16) {
+      // e.g. "2026-04-01 10:59:59" → add 1 second to get 11:00
+      const d = new Date(endClean.replace(' ', 'T'));
+      d.setSeconds(d.getSeconds() + 1);
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mm = String(d.getMinutes()).padStart(2, '0');
+      endTime = `${hh}:${mm}`;
+    } else {
+      endTime = endClean.substring(11, 16);
+    }
+    return `${start}–${endTime}`;
   }
 
   function handleResponse(data) {
@@ -587,13 +628,17 @@
         if (r.reason) note = `<div class="res-note">${r.reason}</div>`;
       }
 
-      const origTime = fmtDateTime(r.original_start) + (r.original_end ? '–' + r.original_end.slice(-5) : '');
-      const newTime  = fmtDateTime(r.new_start)      + (r.new_end      ? '–' + r.new_end.slice(-5)      : '');
+      const origTime = fmtRange(r.original_start, r.original_end);
+      const newTime  = fmtRange(r.new_start, r.new_end);
+      const origRoom = roomName(r.original_resource);
+      const newRoom  = roomName(r.new_resource);
 
       return `
         <tr>
           <td><div class="res-ref">${r.ref || '—'}</div></td>
+          <td><div class="res-datetime">${origRoom}</div></td>
           <td><div class="res-datetime">${origTime}</div></td>
+          <td><div class="res-datetime">${newRoom}</div></td>
           <td><div class="res-datetime">${newTime}</div></td>
           <td>${badge}${note}</td>
         </tr>`;
