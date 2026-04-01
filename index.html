@@ -580,6 +580,7 @@
   }
 
   function handleResponse(data) {
+    console.log('handleResponse received:', JSON.stringify(data));
     const status = data.status || 'error';
 
     if (status === 'no_cart') {
