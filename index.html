@@ -648,8 +648,10 @@
     $('resetRow').classList.add('show');
 
     // Lock the form
-    ['cartId','room','startDate','startTime','endTime','recalcPrice','onlyTimes','submitBtn']
+    ['cartId','room','startDate','startTime','endTime','recalcPrice','onlyTimes']
       .forEach(id => $(id).disabled = true);
+    $('submitBtn').disabled = true;
+    $('submitBtn').onclick = null;
   }
 
   // ── Reset ────────────────────────────────────────────────
@@ -665,6 +667,7 @@
     $('recalcPrice').disabled = false; $('recalcPrice').checked = false;
     $('onlyTimes').disabled = false;   $('onlyTimes').checked = false;
     $('submitBtn').disabled = false;
+    $('submitBtn').onclick = handleSubmit;
     $('btnLabel').textContent = 'Update Bookings';
 
     $('resultsCard').classList.remove('show');
