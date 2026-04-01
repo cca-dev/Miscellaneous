@@ -457,9 +457,9 @@
 
   // ── Submit ───────────────────────────────────────────────
   function setLoading(on) {
-    $('submitBtn').disabled = on;
     $('btnSpinner').style.display = on ? 'block' : 'none';
     $('btnLabel').textContent = on ? 'Updating bookings…' : 'Update Bookings';
+    if (on) $('submitBtn').disabled = true;
   }
 
   async function handleSubmit() {
