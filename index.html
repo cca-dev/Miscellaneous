@@ -386,8 +386,7 @@
   const WEBHOOK = 'https://n8n.castlelandcentre.com/webhook-test/d17516c6-db50-4a2e-91f4-cefc165a303f';
 
   const $ = id => document.getElementById(id);
-  disabledDate();
-  
+
   // ── Time dropdowns: 08:00–22:00, 15-min steps ───────────
   function buildTimeOptions(selectId) {
     const sel = $(selectId);
@@ -407,14 +406,12 @@
   buildTimeOptions('startTime');
   buildTimeOptions('endTime');
 
-  function disabledDate(){
   // Only Times toggle — disables start date
-  $('onlyTimes').addEventListener('change', function() {
+  $('onlyTimes').addEventListener('change', function disabledDate() {
     $('startDate').disabled = this.checked;
     if (this.checked) $('startDate').value = '';
     $('startDate').classList.remove('invalid');
   });
-}
 
   // ── Validation ───────────────────────────────────────────
   function clearInvalid() {
