@@ -406,18 +406,18 @@
   buildTimeOptions('startTime');
   buildTimeOptions('endTime');
 
-  function disableDate() {
+function disableDate() {
+  const checked = $('onlyTimes').checked;
+  $('startDate').disabled = checked;
+  if (checked) $('startDate').value = '';
+  $('startDate').classList.remove('invalid');
+}
 
-    $('startDate').disabled = this.checked;
-    if (this.checked) $('startDate').value = '';
-    $('startDate').classList.remove('invalid');
+// Only Times toggle — disables start date
+$('onlyTimes').addEventListener('change', disableDate);
 
-  }
-
-    // Only Times toggle — disables start date
-  $('onlyTimes').addEventListener('change', disableDate());
-
-  disableDate();
+// Run on page load to reflect default checked state
+disableDate();
 
   // ── Validation ───────────────────────────────────────────
   function clearInvalid() {
