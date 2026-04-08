@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bulk Time Updater — Castleland Community Centre</title>
+<title>Bulk Updater — Castleland Community Centre</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=poppins:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,15 +14,15 @@
     --surface:   #ffffff;
     --border:    #e0dbd2;
     --text:      #1a1814;
-    --muted:     #528dad;
-    --accent:    #44b0ec;
+    --muted:     #8a8478;
+    --accent:    #2c5f2e;
     --accent-lt: #e8f0e8;
     --danger:    #c0392b;
     --danger-lt: #fdf0ee;
     --warn:      #b45309;
     --warn-lt:   #fef3e2;
     --radius:    10px;
-    --font:      'poppins', sans-serif;
+    --font:      'Outfit', sans-serif;
   }
 
   body {
@@ -63,7 +63,7 @@
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--muted);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .divider { height: 1px; background: var(--border); margin: 22px 0; }
@@ -119,7 +119,59 @@
 
   input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.4; cursor: pointer; }
 
-  /* Checkbox */
+  /* ── What to change checkboxes ── */
+  .change-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .change-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .change-option:has(input:checked) {
+    border-color: var(--accent);
+    background: var(--accent-lt);
+  }
+
+  .change-option input[type="checkbox"] {
+    width: 17px; height: 17px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .change-option-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* ── Dynamic field sections ── */
+  .field-section {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease;
+    margin-top: 0;
+  }
+
+  .field-section.visible {
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 18px;
+  }
+
+  /* ── Checkbox (recalculate) ── */
   .checkbox-field {
     display: flex;
     align-items: center;
@@ -135,7 +187,7 @@
   }
   .checkbox-label { font-size: 14px; font-weight: 500; color: var(--text); }
 
-  /* Submit button */
+  /* ── Submit button ── */
   .btn-submit {
     width: 100%;
     background: var(--accent);
@@ -154,7 +206,7 @@
     justify-content: center;
     gap: 8px;
   }
-  .btn-submit:hover:not(:disabled) { background: #2a78c0; transform: translateY(-1px); }
+  .btn-submit:hover:not(:disabled) { background: #234d25; transform: translateY(-1px); }
   .btn-submit:active:not(:disabled) { transform: translateY(0); }
   .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -169,7 +221,7 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Simple banners (errors before submit) */
+  /* ── Banners ── */
   .banner {
     border-radius: var(--radius);
     padding: 14px 16px;
@@ -185,7 +237,7 @@
   .banner strong { font-weight: 600; display: block; margin-bottom: 2px; }
   .banner-error { background: var(--danger-lt); color: var(--danger); border: 1px solid rgba(192,57,43,0.2); }
 
-  /* Results card */
+  /* ── Results card ── */
   .results-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -205,7 +257,6 @@
   }
 
   .results-title { font-size: 13px; font-weight: 700; color: var(--text); }
-
   .pill-row { display: flex; gap: 6px; }
 
   .pill {
@@ -217,12 +268,9 @@
   .pill-changed  { background: var(--accent-lt); color: var(--accent); }
   .pill-conflict { background: var(--warn-lt);   color: var(--warn); }
 
-  /* Results table */
+  /* ── Results table ── */
   .res-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-
-  .res-table thead tr {
-    border-bottom: 1.5px solid var(--border);
-  }
+  .res-table thead tr { border-bottom: 1.5px solid var(--border); }
   .res-table th {
     font-size: 11px;
     font-weight: 600;
@@ -233,7 +281,6 @@
     text-align: left;
   }
   .res-table th:last-child { padding-right: 0; }
-
   .res-table td {
     padding: 10px 8px 10px 0;
     border-bottom: 1px solid var(--border);
@@ -259,10 +306,9 @@
   .badge-changed  { background: var(--accent-lt); color: var(--accent); }
   .badge-conflict { background: var(--warn-lt);   color: var(--warn); }
   .badge-error    { background: var(--danger-lt); color: var(--danger); }
-
   .res-note { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
-  /* Reset */
+  /* ── Reset ── */
   .reset-row { text-align: center; margin-top: 16px; display: none; }
   .reset-row.show { display: block; }
   .reset-link {
@@ -283,6 +329,7 @@
 
   <div class="card">
 
+    <!-- Cart ID -->
     <div class="field">
       <label for="cartId">Cart ID</label>
       <input type="text" id="cartId" placeholder="Paste cart ID from Planyo without the C" autocomplete="off" />
@@ -290,49 +337,65 @@
 
     <div class="divider"></div>
 
-    <div class="field">
-      <label for="room">Room</label>
-      <select id="room">
-        <option value="" disabled selected>Select a room…</option>
-        <option value="104777">Pendragon</option>
-        <option value="105032">Camelot</option>
-        <option value="105033">Lancelot</option>
-        <option value="105572">Galahad</option>
-        <option value="105573">Merlin</option>
-        <option value="123941">Miscellaneous</option>
-      </select>
+    <!-- What to change -->
+    <p class="section-label">What do you want to change?</p>
+    <div class="change-options">
+
+      <label class="change-option">
+        <input type="checkbox" id="chkDate" />
+        <span class="change-option-label">Date</span>
+      </label>
+      <!-- Date field -->
+      <div class="field-section" id="sectionDate">
+        <div class="field">
+          <label for="startDate">New Start Date</label>
+          <input type="date" id="startDate" />
+        </div>
+      </div>
+
+      <label class="change-option">
+        <input type="checkbox" id="chkTimes" />
+        <span class="change-option-label">Times</span>
+      </label>
+      <!-- Times fields -->
+      <div class="field-section" id="sectionTimes">
+        <div class="row-2">
+          <div class="field">
+            <label for="startTime">New Start Time</label>
+            <select id="startTime"></select>
+          </div>
+          <div class="field">
+            <label for="endTime">New End Time</label>
+            <select id="endTime"></select>
+          </div>
+        </div>
+      </div>
+
+      <label class="change-option">
+        <input type="checkbox" id="chkRoom" />
+        <span class="change-option-label">Room</span>
+      </label>
+      <!-- Room field -->
+      <div class="field-section" id="sectionRoom">
+        <div class="field">
+          <label for="room">New Room</label>
+          <select id="room">
+            <option value="" disabled selected>Select a room…</option>
+            <option value="104777">Pendragon</option>
+            <option value="105032">Camelot</option>
+            <option value="105033">Lancelot</option>
+            <option value="105572">Galahad</option>
+            <option value="105573">Merlin</option>
+            <option value="123941">Miscellaneous</option>
+          </select>
+        </div>
+      </div>
+
     </div>
 
     <div class="divider"></div>
 
-    <p class="section-label">New Start Date &amp; Time</p>
-
-    <div class="row-2">
-      <div class="field">
-        <label for="startDate">Start Date</label>
-        <input type="date" id="startDate" />
-      </div>
-      <div class="field">
-        <label for="startTime">Start Time</label>
-        <select id="startTime"></select>
-      </div>
-    </div>
-
-    <div class="row-2">
-      <div class="field">
-        <label class="checkbox-field" for="onlyTimes">
-          <input type="checkbox" id="onlyTimes" checked>
-          <span class="checkbox-label">Change Times Only</span>
-        </label>
-      </div>
-      <div class="field">
-        <label for="endTime">End Time</label>
-        <select id="endTime"></select>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
+    <!-- Recalculate price — always shown -->
     <div class="field">
       <label class="checkbox-field" for="recalcPrice">
         <input type="checkbox" id="recalcPrice" />
@@ -353,7 +416,7 @@
 
   </div>
 
-  <!-- Results card — shown after response -->
+  <!-- Results card -->
   <div class="results-card" id="resultsCard">
     <div class="results-header">
       <span class="results-title">Results</span>
@@ -406,23 +469,22 @@
   buildTimeOptions('startTime');
   buildTimeOptions('endTime');
 
-function disableDate() {
-  const checked = $('onlyTimes').checked;
-  $('startDate').disabled = checked;
-  if (checked) $('startDate').value = '';
-  $('startDate').classList.remove('invalid');
-}
+  // ── Checkbox → show/hide field sections ─────────────────
+  function toggleSection(chkId, sectionId) {
+    const checked = $(chkId).checked;
+    $(sectionId).classList.toggle('visible', checked);
+  }
 
-// Only Times toggle — disables start date
-$('onlyTimes').addEventListener('change', disableDate);
-
-// Run on page load to reflect default checked state
-disableDate();
+  $('chkDate').addEventListener('change',  () => toggleSection('chkDate',  'sectionDate'));
+  $('chkTimes').addEventListener('change', () => toggleSection('chkTimes', 'sectionTimes'));
+  $('chkRoom').addEventListener('change',  () => toggleSection('chkRoom',  'sectionRoom'));
 
   // ── Validation ───────────────────────────────────────────
   function clearInvalid() {
-    ['cartId','room','startDate','startTime','endTime']
+    ['cartId','startDate','startTime','endTime','room']
       .forEach(id => $(id).classList.remove('invalid'));
+    ['chkDate','chkTimes','chkRoom']
+      .forEach(id => $(id).closest('.change-option').style.outline = '');
   }
 
   function markInvalid(id) { $(id).classList.add('invalid'); }
@@ -439,20 +501,39 @@ disableDate();
     hideError();
     let ok = true;
 
-    ['cartId','room','startTime','endTime'].forEach(id => {
-      if (!$(id).value.trim()) { markInvalid(id); ok = false; }
-    });
+    // Cart ID always required
+    if (!$('cartId').value.trim()) { markInvalid('cartId'); ok = false; }
 
-    if (!$('onlyTimes').checked && !$('startDate').value) {
-      markInvalid('startDate'); ok = false;
-    }
+    // At least one change type must be selected
+    const changingDate  = $('chkDate').checked;
+    const changingTimes = $('chkTimes').checked;
+    const changingRoom  = $('chkRoom').checked;
 
-    if (!ok) {
-      showError('<strong>Missing fields</strong>Please fill in all fields before submitting.');
+    if (!changingDate && !changingTimes && !changingRoom) {
+      showError('<strong>Nothing selected</strong>Please select at least one thing to change — Date, Times, or Room.');
       return false;
     }
 
-    if ($('endTime').value <= $('startTime').value) {
+    // Validate visible fields only
+    if (changingDate && !$('startDate').value) {
+      markInvalid('startDate'); ok = false;
+    }
+
+    if (changingTimes) {
+      if (!$('startTime').value) { markInvalid('startTime'); ok = false; }
+      if (!$('endTime').value)   { markInvalid('endTime');   ok = false; }
+    }
+
+    if (changingRoom && !$('room').value) {
+      markInvalid('room'); ok = false;
+    }
+
+    if (!ok) {
+      showError('<strong>Missing fields</strong>Please fill in all selected fields before submitting.');
+      return false;
+    }
+
+    if (changingTimes && $('endTime').value <= $('startTime').value) {
       markInvalid('endTime');
       showError('<strong>Invalid time range</strong>End time must be after the start time.');
       return false;
@@ -473,15 +554,18 @@ disableDate();
     if (!validate()) return;
     setLoading(true);
 
+    // Only include fields for what's being changed
     const payload = {
       cart_id:           $('cartId').value.trim(),
-      room:              $('room').value,
-      start_date:        $('startDate').value,
-      start_time:        $('startTime').value,
-      end_time:          $('endTime').value,
       recalculate_price: $('recalcPrice').checked,
-      only_times:        $('onlyTimes').checked
+      change_date:       $('chkDate').checked,
+      change_times:      $('chkTimes').checked,
+      change_room:       $('chkRoom').checked,
     };
+
+    if ($('chkDate').checked)  payload.start_date = $('startDate').value;
+    if ($('chkTimes').checked) { payload.start_time = $('startTime').value; payload.end_time = $('endTime').value; }
+    if ($('chkRoom').checked)  payload.room = $('room').value;
 
     try {
       const res = await fetch(WEBHOOK, {
@@ -493,7 +577,6 @@ disableDate();
       let data = {};
       try {
         const raw = await res.json();
-        // Unwrap n8n envelope if present: [{ response: { body: {...} } }]
         if (Array.isArray(raw) && raw[0]?.response?.body) {
           data = raw[0].response.body;
         } else if (raw?.response?.body) {
@@ -512,30 +595,8 @@ disableDate();
     setLoading(false);
   }
 
-  // ── Handle n8n response ──────────────────────────────────
-  //
-  // Expected shape from n8n:
-  // {
-  //   "status": "complete",
-  //   "reservations": [
-  //     {
-  //       "ref": "12345",
-  //       "original_start": "2026-04-14 10:00",
-  //       "original_end":   "2026-04-14 12:00",
-  //       "new_start":      "2026-04-15 11:00",
-  //       "new_end":        "2026-04-15 13:00",
-  //       "result":         "changed"           // or "conflict"
-  //       "reason":         "..."               // optional, on conflict
-  //       "warning":        "..."               // optional, on changed
-  //     }
-  //   ]
-  // }
-  //
-  // Also handles: { "status": "no_cart" }
-
   // ── Room ID → name lookup ────────────────────────────────
   const ROOMS = {
-    "206667": "Party",
     "104777": "Pendragon",
     "105032": "Camelot",
     "105033": "Lancelot",
@@ -544,13 +605,9 @@ disableDate();
     "123941": "Miscellaneous"
   };
 
-  function roomName(id) {
-    return ROOMS[String(id)] || id || '—';
-  }
+  function roomName(id) { return ROOMS[String(id)] || id || '—'; }
 
-  // ── Date formatter ───────────────────────────────────────
-  // Handles "2026-04-29 09:00" and "2026-04-29 10:59:59"
-  // Returns "Tue 29 Apr, 09:00"
+  // ── Date/time formatters ─────────────────────────────────
   function fmtDateTime(str) {
     if (!str) return '—';
     const clean = str.trim();
@@ -559,40 +616,34 @@ disableDate();
     const day  = d.toLocaleDateString('en-GB', { weekday: 'short' });
     const date = d.getDate();
     const mon  = d.toLocaleDateString('en-GB', { month: 'short' });
-    // Grab HH:MM from the string directly — avoids timezone shifting
     const timePart = clean.substring(11, 16);
     return `${day} ${date} ${mon}, ${timePart}`;
   }
 
-  // Formats a start+end pair as "Tue 29 Apr, 09:00–10:00"
-  // Planyo end times come as HH:59:59 (internal format) — round up to next hour for display
   function fmtRange(startStr, endStr) {
     const start = fmtDateTime(startStr);
     if (!endStr) return start;
-    // If end seconds are :59, treat as end of that hour → display next clean hour
     const endClean = endStr.trim();
     let endTime;
     if (endClean.slice(-2) === '59' && endClean.length > 16) {
-      // e.g. "2026-04-01 10:59:59" → add 1 second to get 11:00
       const d = new Date(endClean.replace(' ', 'T'));
       d.setSeconds(d.getSeconds() + 1);
-      const hh = String(d.getHours()).padStart(2, '0');
-      const mm = String(d.getMinutes()).padStart(2, '0');
-      endTime = `${hh}:${mm}`;
+      endTime = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
     } else {
       endTime = endClean.substring(11, 16);
     }
     return `${start}–${endTime}`;
   }
 
+  // ── Response handler ─────────────────────────────────────
   function handleResponse(data) {
-    console.log('handleResponse received:', JSON.stringify(data));
     const status = data.status || 'error';
 
     if (status === 'no_cart') {
       markInvalid('cartId');
       showError('<strong>Cart not found</strong>No cart was found with that ID. Please double-check and try again.');
-      setLoading(false);
+      $('submitBtn').disabled = false;
+      $('submitBtn').onclick = handleSubmit;
       return;
     }
 
@@ -601,7 +652,6 @@ disableDate();
       return;
     }
 
-    // Fallback
     showError('<strong>Unexpected response</strong>Something went wrong. Please try again or contact it@castlelandcentre.com.');
   }
 
@@ -609,7 +659,6 @@ disableDate();
     const countChanged  = reservations.filter(r => r.result === 'changed').length;
     const countConflict = reservations.filter(r => r.result === 'conflict').length;
 
-    // Summary pills
     if (countChanged > 0) {
       $('pillChanged').textContent = `✓ ${countChanged} updated`;
       $('pillChanged').style.display = '';
@@ -619,7 +668,6 @@ disableDate();
       $('pillConflict').style.display = '';
     }
 
-    // Table rows
     $('resTableBody').innerHTML = reservations.map(r => {
       let badge, note = '';
 
@@ -628,8 +676,7 @@ disableDate();
         if (r.warning) note = `<div class="res-note">⚠ ${r.warning}</div>`;
       } else if (r.result === 'conflict') {
         badge = `<span class="badge badge-conflict">⚠ Conflict</span>`;
-        if (r.reason) note = `<div class="res-note">${r.reason}</div>`;
-        else note = `<div class="res-note">Unchanged</div>`;
+        note = `<div class="res-note">${r.reason || 'Unchanged'}</div>`;
       } else {
         badge = `<span class="badge badge-error">✕ Error</span>`;
         if (r.reason) note = `<div class="res-note">${r.reason}</div>`;
@@ -655,10 +702,9 @@ disableDate();
     $('resetRow').classList.add('show');
 
     // Lock the form
-    ['cartId','room','startDate','startTime','endTime','recalcPrice','onlyTimes']
+    ['cartId','startDate','startTime','endTime','room','recalcPrice',
+     'chkDate','chkTimes','chkRoom','submitBtn']
       .forEach(id => $(id).disabled = true);
-    $('submitBtn').disabled = true;
-    $('submitBtn').onclick = null;
   }
 
   // ── Reset ────────────────────────────────────────────────
@@ -666,13 +712,21 @@ disableDate();
     clearInvalid();
     hideError();
 
-    $('cartId').disabled = false;    $('cartId').value = '';
-    $('startDate').disabled = false; $('startDate').value = '';
-    $('room').disabled = false;      $('room').selectedIndex = 0;
-    $('startTime').disabled = false; $('startTime').selectedIndex = 0;
-    $('endTime').disabled = false;   $('endTime').selectedIndex = 0;
+    $('cartId').disabled = false;     $('cartId').value = '';
+    $('startDate').disabled = false;  $('startDate').value = '';
+    $('startTime').disabled = false;  $('startTime').selectedIndex = 0;
+    $('endTime').disabled = false;    $('endTime').selectedIndex = 0;
+    $('room').disabled = false;       $('room').selectedIndex = 0;
     $('recalcPrice').disabled = false; $('recalcPrice').checked = false;
-    $('onlyTimes').disabled = false;   $('onlyTimes').checked = false;
+
+    ['chkDate','chkTimes','chkRoom'].forEach(id => {
+      $(id).disabled = false;
+      $(id).checked = false;
+    });
+
+    ['sectionDate','sectionTimes','sectionRoom']
+      .forEach(id => $(id).classList.remove('visible'));
+
     $('submitBtn').disabled = false;
     $('submitBtn').onclick = handleSubmit;
     $('btnLabel').textContent = 'Update Bookings';
