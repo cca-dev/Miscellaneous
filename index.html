@@ -561,6 +561,10 @@
       change_date:       $('chkDate').checked,
       change_times:      $('chkTimes').checked,
       change_room:       $('chkRoom').checked,
+      start_date:        $('chkDate').checked  ? $('startDate').value  : null,
+      start_time:        $('chkTimes').checked ? $('startTime').value  : null,
+      end_time:          $('chkTimes').checked ? $('endTime').value    : null,
+      room:              $('chkRoom').checked  ? $('room').value       : null,
     };
 
     if ($('chkDate').checked)  payload.start_date = $('startDate').value;
