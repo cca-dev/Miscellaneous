@@ -706,8 +706,8 @@
 
   // ── Render complete (update) results ─────────────────────
   function renderComplete(reservations) {
-    const countChanged  = reservations.filter(r => r.result === 'changed').length;
-    const countConflict = reservations.filter(r => r.result === 'conflict').length;
+    const countChanged  = reservations.filter(r => r.available === 'changed').length;
+    const countConflict = reservations.filter(r => r.available === 'conflict').length;
 
     $('resultsTitle').textContent = 'Update Results';
 
