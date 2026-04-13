@@ -687,7 +687,7 @@
       </tr>`;
 
     $('resTableBody').innerHTML = data.reservations.map(r => {
-      const badge = r.available
+      const badge = r.available === 'available'
         ? `<span class="badge badge-ok">✓ Available</span>`
         : `<span class="badge badge-conflict">⚠ Conflict</span>`;
       const note = !r.available && r.reason
