@@ -690,14 +690,11 @@
       const badge = r.available === 'available'
         ? `<span class="badge badge-ok">✓ Available</span>`
         : `<span class="badge badge-conflict">⚠ Conflict</span>`;
-      const note = !r.available && r.reason
-        ? `<div class="res-note">${r.reason}</div>`
-        : '';
       return `
         <tr>
           <td><div class="res-ref">${r.ref || '—'}</div></td>
           <td><div class="res-datetime">${fmtRange(r.new_start, r.new_end)}</div></td>
-          <td>${badge}${note}</td>
+          <td>${badge}</td>
         </tr>`;
     }).join('');
 
@@ -734,16 +731,16 @@
       </tr>`;
 
     $('resTableBody').innerHTML = reservations.map(r => {
-      let badge, note = '';
+      let badge = '';
       if (r.available === 'changed') {
         badge = `<span class="badge badge-changed">✓ Changed</span>`;
-        if (r.warning) note = `<div class="res-note">⚠ ${r.warning}</div>`;
+        
       } else if (r.available === 'conflict') {
         badge = `<span class="badge badge-conflict">⚠ Conflict</span>`;
-        note  = `<div class="res-note">${r.reason || 'Unchanged'}</div>`;
+        
       } else {
         badge = `<span class="badge badge-error">✕ Error</span>`;
-        if (r.reason) note = `<div class="res-note">${r.reason}</div>`;
+        
       }
 
       return `
@@ -753,7 +750,7 @@
           <td><div class="res-datetime">${fmtRange(r.original_start, r.original_end)}</div></td>
           <td><div class="res-datetime">${roomName(r.new_resource)}</div></td>
           <td><div class="res-datetime">${fmtRange(r.new_start, r.new_end)}</div></td>
-          <td>${badge}${note}</td>
+          <td>${badge}</td>
         </tr>`;
     }).join('');
 
