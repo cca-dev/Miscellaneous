@@ -655,9 +655,10 @@
 
   // ── Render precheck results ──────────────────────────────
   function renderPrecheck(data) {
+    
+    const available = data.reservations.filter(r => r.available === 'available').length
+    const conflicts = data.reservations.filter(r => r.available === 'conflict').length;
     const total     = data.reservations.length;
-    const available = data.reservations.filter(r => r.available).length;
-    const conflicts = total - available;
 
     $('resultsTitle').textContent = 'Availability Check';
 
