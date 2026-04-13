@@ -692,7 +692,7 @@
         : `<span class="badge badge-conflict">⚠ Conflict</span>`;
       return `
         <tr>
-          <td><div class="res-ref">${r.ref || '—'}</div></td>
+          <td><div class="res-ref"><a href="https://planyo.com/rental.php?id=".${r.ref || '—'}."</a></div></td>
           <td><div class="res-datetime">${fmtRange(r.new_start, r.new_end)}</div></td>
           <td>${badge}</td>
         </tr>`;
