@@ -734,10 +734,10 @@
 
     $('resTableBody').innerHTML = reservations.map(r => {
       let badge, note = '';
-      if (r.result === 'changed') {
+      if (r.available === 'changed') {
         badge = `<span class="badge badge-changed">✓ Changed</span>`;
         if (r.warning) note = `<div class="res-note">⚠ ${r.warning}</div>`;
-      } else if (r.result === 'conflict') {
+      } else if (r.available === 'conflict') {
         badge = `<span class="badge badge-conflict">⚠ Conflict</span>`;
         note  = `<div class="res-note">${r.reason || 'Unchanged'}</div>`;
       } else {
