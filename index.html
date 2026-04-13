@@ -120,11 +120,7 @@
   input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.4; cursor: pointer; }
 
   /* ── What to change checkboxes ── */
-  .change-options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+  .change-options { display: flex; flex-direction: column; gap: 10px; }
 
   .change-option {
     display: flex;
@@ -150,11 +146,7 @@
     flex-shrink: 0;
   }
 
-  .change-option-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-  }
+  .change-option-label { font-size: 14px; font-weight: 600; color: var(--text); }
 
   /* ── Dynamic field sections ── */
   .field-section {
@@ -187,11 +179,8 @@
   }
   .checkbox-label { font-size: 14px; font-weight: 500; color: var(--text); }
 
-  /* ── Submit button ── */
-  .btn-submit {
-    width: 100%;
-    background: var(--accent);
-    color: #fff;
+  /* ── Buttons ── */
+  .btn {
     border: none;
     border-radius: var(--radius);
     font-family: var(--font);
@@ -199,16 +188,22 @@
     font-weight: 600;
     padding: 13px;
     cursor: pointer;
-    margin-top: 22px;
     transition: background 0.15s, transform 0.1s, opacity 0.15s;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+    width: 100%;
   }
-  .btn-submit:hover:not(:disabled) { background: #234d25; transform: translateY(-1px); }
-  .btn-submit:active:not(:disabled) { transform: translateY(0); }
-  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn:hover:not(:disabled) { transform: translateY(-1px); }
+  .btn:active:not(:disabled) { transform: translateY(0); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-primary { background: var(--accent); color: #fff; margin-top: 22px; }
+  .btn-primary:hover:not(:disabled) { background: #234d25; }
+
+  .btn-confirm { background: var(--accent); color: #fff; margin-top: 16px; }
+  .btn-confirm:hover:not(:disabled) { background: #234d25; }
 
   .btn-spinner {
     width: 16px; height: 16px;
@@ -237,8 +232,8 @@
   .banner strong { font-weight: 600; display: block; margin-bottom: 2px; }
   .banner-error { background: var(--danger-lt); color: var(--danger); border: 1px solid rgba(192,57,43,0.2); }
 
-  /* ── Results card ── */
-  .results-card {
+  /* ── Precheck card ── */
+  .precheck-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
@@ -247,28 +242,27 @@
     margin-top: 16px;
     display: none;
   }
-  .results-card.show { display: block; }
+  .precheck-card.show { display: block; }
 
-  .results-header {
+  .precheck-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .precheck-title { font-size: 14px; font-weight: 700; color: var(--text); }
+
+  .precheck-summary {
+    font-size: 13px;
+    color: var(--muted);
     margin-bottom: 16px;
   }
 
-  .results-title { font-size: 13px; font-weight: 700; color: var(--text); }
-  .pill-row { display: flex; gap: 6px; }
+  .precheck-summary.has-conflicts { color: var(--warn); }
+  .precheck-summary.all-clear { color: var(--accent); }
 
-  .pill {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 9px;
-    border-radius: 20px;
-  }
-  .pill-changed  { background: var(--accent-lt); color: var(--accent); }
-  .pill-conflict { background: var(--warn-lt);   color: var(--warn); }
-
-  /* ── Results table ── */
+  /* ── Shared table styles ── */
   .res-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .res-table thead tr { border-bottom: 1.5px solid var(--border); }
   .res-table th {
@@ -303,10 +297,66 @@
     border-radius: 6px;
     white-space: nowrap;
   }
+  .badge-ok       { background: var(--accent-lt); color: var(--accent); }
   .badge-changed  { background: var(--accent-lt); color: var(--accent); }
   .badge-conflict { background: var(--warn-lt);   color: var(--warn); }
   .badge-error    { background: var(--danger-lt); color: var(--danger); }
   .res-note { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  /* ── Precheck action row ── */
+  .precheck-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 18px;
+    gap: 12px;
+  }
+
+  .btn-cancel-precheck {
+    font-size: 13px;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 0;
+  }
+  .btn-cancel-precheck:hover { color: var(--text); }
+
+  .btn-confirm-wrap { flex: 1; }
+
+  /* ── Results card ── */
+  .results-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    margin-top: 16px;
+    display: none;
+  }
+  .results-card.show { display: block; }
+
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .results-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .pill-row { display: flex; gap: 6px; }
+
+  .pill {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .pill-changed  { background: var(--accent-lt); color: var(--accent); }
+  .pill-conflict { background: var(--warn-lt);   color: var(--warn); }
 
   /* ── Reset ── */
   .reset-row { text-align: center; margin-top: 16px; display: none; }
@@ -327,9 +377,9 @@
     <h1>Bulk Updater</h1>
   </div>
 
-  <div class="card">
+  <!-- ── Main form card ── -->
+  <div class="card" id="formCard">
 
-    <!-- Cart ID -->
     <div class="field">
       <label for="cartId">Cart ID</label>
       <input type="text" id="cartId" placeholder="Paste cart ID from Planyo without the C" autocomplete="off" />
@@ -337,7 +387,6 @@
 
     <div class="divider"></div>
 
-    <!-- What to change -->
     <p class="section-label">What do you want to change?</p>
     <div class="change-options">
 
@@ -345,7 +394,6 @@
         <input type="checkbox" id="chkDate" />
         <span class="change-option-label">Date</span>
       </label>
-      <!-- Date field -->
       <div class="field-section" id="sectionDate">
         <div class="field">
           <label for="startDate">New Start Date</label>
@@ -357,7 +405,6 @@
         <input type="checkbox" id="chkTimes" />
         <span class="change-option-label">Times</span>
       </label>
-      <!-- Times fields -->
       <div class="field-section" id="sectionTimes">
         <div class="row-2">
           <div class="field">
@@ -375,7 +422,6 @@
         <input type="checkbox" id="chkRoom" />
         <span class="change-option-label">Room</span>
       </label>
-      <!-- Room field -->
       <div class="field-section" id="sectionRoom">
         <div class="field">
           <label for="room">New Room</label>
@@ -395,7 +441,6 @@
 
     <div class="divider"></div>
 
-    <!-- Recalculate price — always shown -->
     <div class="field">
       <label class="checkbox-field" for="recalcPrice">
         <input type="checkbox" id="recalcPrice" />
@@ -403,25 +448,51 @@
       </label>
     </div>
 
-    <!-- Validation error banner -->
     <div class="banner banner-error" id="bannerError">
       <span class="banner-icon">✕</span>
       <div id="bannerErrorMsg"></div>
     </div>
 
-    <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">
+    <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()">
       <div class="btn-spinner" id="btnSpinner"></div>
-      <span id="btnLabel">Update Bookings</span>
+      <span id="btnLabel">Check Availability</span>
     </button>
 
   </div>
 
-  <!-- Results card -->
+  <!-- ── Precheck card ── -->
+  <div class="precheck-card" id="precheckCard">
+    <div class="precheck-header">
+      <span class="precheck-title">Availability Check</span>
+    </div>
+    <p class="precheck-summary" id="precheckSummary"></p>
+    <table class="res-table">
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>New Time</th>
+          <th>Available</th>
+        </tr>
+      </thead>
+      <tbody id="precheckTableBody"></tbody>
+    </table>
+    <div class="precheck-actions">
+      <button class="btn-cancel-precheck" onclick="cancelPrecheck()">← Go back</button>
+      <div class="btn-confirm-wrap">
+        <button class="btn btn-confirm" id="confirmBtn" onclick="handleConfirm()">
+          <div class="btn-spinner" id="confirmSpinner"></div>
+          <span id="confirmLabel">Confirm &amp; Update</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Results card ── -->
   <div class="results-card" id="resultsCard">
     <div class="results-header">
       <span class="results-title">Results</span>
       <div class="pill-row">
-        <span class="pill pill-changed" id="pillChanged" style="display:none"></span>
+        <span class="pill pill-changed"  id="pillChanged"  style="display:none"></span>
         <span class="pill pill-conflict" id="pillConflict" style="display:none"></span>
       </div>
     </div>
@@ -450,6 +521,9 @@
 
   const $ = id => document.getElementById(id);
 
+  // Stores the original payload so confirm can resend it with confirmed: true
+  let lastPayload = null;
+
   // ── Time dropdowns: 08:00–22:00, 15-min steps ───────────
   function buildTimeOptions(selectId) {
     const sel = $(selectId);
@@ -471,8 +545,7 @@
 
   // ── Checkbox → show/hide field sections ─────────────────
   function toggleSection(chkId, sectionId) {
-    const checked = $(chkId).checked;
-    $(sectionId).classList.toggle('visible', checked);
+    $(sectionId).classList.toggle('visible', $(chkId).checked);
   }
 
   $('chkDate').addEventListener('change',  () => toggleSection('chkDate',  'sectionDate'));
@@ -483,8 +556,6 @@
   function clearInvalid() {
     ['cartId','startDate','startTime','endTime','room']
       .forEach(id => $(id).classList.remove('invalid'));
-    ['chkDate','chkTimes','chkRoom']
-      .forEach(id => $(id).closest('.change-option').style.outline = '');
   }
 
   function markInvalid(id) { $(id).classList.add('invalid'); }
@@ -501,10 +572,8 @@
     hideError();
     let ok = true;
 
-    // Cart ID always required
     if (!$('cartId').value.trim()) { markInvalid('cartId'); ok = false; }
 
-    // At least one change type must be selected
     const changingDate  = $('chkDate').checked;
     const changingTimes = $('chkTimes').checked;
     const changingRoom  = $('chkRoom').checked;
@@ -514,19 +583,10 @@
       return false;
     }
 
-    // Validate visible fields only
-    if (changingDate && !$('startDate').value) {
-      markInvalid('startDate'); ok = false;
-    }
-
-    if (changingTimes) {
-      if (!$('startTime').value) { markInvalid('startTime'); ok = false; }
-      if (!$('endTime').value)   { markInvalid('endTime');   ok = false; }
-    }
-
-    if (changingRoom && !$('room').value) {
-      markInvalid('room'); ok = false;
-    }
+    if (changingDate  && !$('startDate').value) { markInvalid('startDate'); ok = false; }
+    if (changingTimes && !$('startTime').value) { markInvalid('startTime'); ok = false; }
+    if (changingTimes && !$('endTime').value)   { markInvalid('endTime');   ok = false; }
+    if (changingRoom  && !$('room').value)       { markInvalid('room');      ok = false; }
 
     if (!ok) {
       showError('<strong>Missing fields</strong>Please fill in all selected fields before submitting.');
@@ -542,64 +602,220 @@
     return true;
   }
 
-  // ── Submit ───────────────────────────────────────────────
-  function setLoading(on) {
-    $('btnSpinner').style.display = on ? 'block' : 'none';
-    $('btnLabel').textContent = on ? 'Updating bookings…' : 'Update Bookings';
-    if (on) $('submitBtn').disabled = true;
-  }
-
-  async function handleSubmit() {
-    hideError();
-    if (!validate()) return;
-    setLoading(true);
-
-    // Only include fields for what's being changed
-    const payload = {
+  // ── Build payload ────────────────────────────────────────
+  function buildPayload(confirmed) {
+    return {
+      confirmed:         confirmed,
       cart_id:           $('cartId').value.trim(),
       recalculate_price: $('recalcPrice').checked,
       change_date:       $('chkDate').checked,
       change_times:      $('chkTimes').checked,
       change_room:       $('chkRoom').checked,
-      start_date:        $('chkDate').checked  ? $('startDate').value  : null,
-      start_time:        $('chkTimes').checked ? $('startTime').value  : null,
-      end_time:          $('chkTimes').checked ? $('endTime').value    : null,
-      room:              $('chkRoom').checked  ? $('room').value       : null,
+      start_date:        $('chkDate').checked  ? $('startDate').value : null,
+      start_time:        $('chkTimes').checked ? $('startTime').value : null,
+      end_time:          $('chkTimes').checked ? $('endTime').value   : null,
+      room:              $('chkRoom').checked  ? $('room').value      : null,
     };
+  }
 
-    if ($('chkDate').checked)  payload.start_date = $('startDate').value;
-    if ($('chkTimes').checked) { payload.start_time = $('startTime').value; payload.end_time = $('endTime').value; }
-    if ($('chkRoom').checked)  payload.room = $('room').value;
+  // ── POST to webhook ──────────────────────────────────────
+  async function postToWebhook(payload) {
+    const res = await fetch(WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const raw = await res.json();
+    if (Array.isArray(raw) && raw[0]?.response?.body) return raw[0].response.body;
+    if (raw?.response?.body) return raw.response.body;
+    return raw;
+  }
+
+  // ── Loading states ───────────────────────────────────────
+  function setSubmitLoading(on) {
+    $('btnSpinner').style.display = on ? 'block' : 'none';
+    $('btnLabel').textContent = on ? 'Checking availability…' : 'Check Availability';
+    if (on) $('submitBtn').disabled = true;
+  }
+
+  function setConfirmLoading(on) {
+    $('confirmSpinner').style.display = on ? 'block' : 'none';
+    $('confirmLabel').textContent = on ? 'Updating bookings…' : 'Confirm & Update';
+    $('confirmBtn').disabled = on;
+  }
+
+  // ── Submit (precheck) ────────────────────────────────────
+  async function handleSubmit() {
+    hideError();
+    if (!validate()) return;
+    setSubmitLoading(true);
+
+    lastPayload = buildPayload(false);
 
     try {
-      const res = await fetch(WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      let data = {};
-      try {
-        const raw = await res.json();
-        if (Array.isArray(raw) && raw[0]?.response?.body) {
-          data = raw[0].response.body;
-        } else if (raw?.response?.body) {
-          data = raw.response.body;
-        } else {
-          data = raw;
-        }
-      } catch { /* non-JSON body */ }
-
+      const data = await postToWebhook(lastPayload);
       handleResponse(data);
-
     } catch (err) {
       showError('<strong>Connection failed</strong>Could not reach the update service. Check your network connection.');
     }
 
-    setLoading(false);
+    setSubmitLoading(false);
   }
 
-  // ── Room ID → name lookup ────────────────────────────────
+  // ── Confirm (execute) ────────────────────────────────────
+  async function handleConfirm() {
+    setConfirmLoading(true);
+
+    const payload = { ...lastPayload, confirmed: true };
+
+    try {
+      const data = await postToWebhook(payload);
+      handleResponse(data);
+    } catch (err) {
+      // Show error inside precheck card area — don't lose the precheck results
+      alert('Connection failed. Could not reach the update service. Please try again.');
+    }
+
+    setConfirmLoading(false);
+  }
+
+  // ── Cancel precheck — go back to form ───────────────────
+  function cancelPrecheck() {
+    $('precheckCard').classList.remove('show');
+    $('submitBtn').disabled = false;
+    $('submitBtn').onclick = handleSubmit;
+  }
+
+  // ── Response router ──────────────────────────────────────
+  function handleResponse(data) {
+    const status = data.status || 'error';
+
+    if (status === 'no_cart') {
+      markInvalid('cartId');
+      showError('<strong>Cart not found</strong>No cart was found with that ID. Please double-check and try again.');
+      $('submitBtn').disabled = false;
+      return;
+    }
+
+    if (status === 'precheck' && Array.isArray(data.reservations)) {
+      renderPrecheck(data);
+      return;
+    }
+
+    if (status === 'complete' && Array.isArray(data.reservations)) {
+      $('precheckCard').classList.remove('show');
+      renderResults(data.reservations);
+      return;
+    }
+
+    showError('<strong>Unexpected response</strong>Something went wrong. Please try again or contact it@castlelandcentre.com.');
+  }
+
+  // ── Render precheck panel ────────────────────────────────
+  function renderPrecheck(data) {
+    const total     = data.reservations.length;
+    const available = data.reservations.filter(r => r.available).length;
+    const conflicts = total - available;
+
+    // Summary message
+    const summary = $('precheckSummary');
+    if (conflicts === 0) {
+      summary.textContent = `All ${total} bookings can be moved. Confirm to proceed.`;
+      summary.className = 'precheck-summary all-clear';
+    } else if (available === 0) {
+      summary.textContent = `None of the ${total} bookings can be moved due to conflicts. No changes will be made.`;
+      summary.className = 'precheck-summary has-conflicts';
+      $('confirmBtn').disabled = true;
+    } else {
+      summary.textContent = `${available} of ${total} bookings can be moved. ${conflicts} conflict${conflicts !== 1 ? 's' : ''} found — confirm to move available bookings only.`;
+      summary.className = 'precheck-summary has-conflicts';
+    }
+
+    // Table rows
+    $('precheckTableBody').innerHTML = data.reservations.map(r => {
+      const badge = r.available
+        ? `<span class="badge badge-ok">✓ Available</span>`
+        : `<span class="badge badge-conflict">⚠ Conflict</span>`;
+      const note = !r.available && r.reason
+        ? `<div class="res-note">${r.reason}</div>`
+        : '';
+      const newTime = fmtRange(r.new_start, r.new_end);
+
+      return `
+        <tr>
+          <td><div class="res-ref">${r.ref || '—'}</div></td>
+          <td><div class="res-datetime">${newTime}</div></td>
+          <td>${badge}${note}</td>
+        </tr>`;
+    }).join('');
+
+    // Lock form, show precheck card
+    ['cartId','startDate','startTime','endTime','room','recalcPrice',
+     'chkDate','chkTimes','chkRoom','submitBtn']
+      .forEach(id => $(id).disabled = true);
+
+    $('precheckCard').classList.add('show');
+
+    // Scroll to it
+    $('precheckCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── Render results table ─────────────────────────────────
+  function renderResults(reservations) {
+    const countChanged  = reservations.filter(r => r.result === 'changed').length;
+    const countConflict = reservations.filter(r => r.result === 'conflict').length;
+
+    if (countChanged > 0) {
+      $('pillChanged').textContent = `✓ ${countChanged} updated`;
+      $('pillChanged').style.display = '';
+    }
+    if (countConflict > 0) {
+      $('pillConflict').textContent = `⚠ ${countConflict} conflict${countConflict !== 1 ? 's' : ''}`;
+      $('pillConflict').style.display = '';
+    }
+
+    $('resTableBody').innerHTML = reservations.map(r => {
+      let badge, note = '';
+
+      if (r.result === 'changed') {
+        badge = `<span class="badge badge-changed">✓ Changed</span>`;
+        if (r.warning) note = `<div class="res-note">⚠ ${r.warning}</div>`;
+      } else if (r.result === 'conflict') {
+        badge = `<span class="badge badge-conflict">⚠ Conflict</span>`;
+        note  = `<div class="res-note">${r.reason || 'Unchanged'}</div>`;
+      } else {
+        badge = `<span class="badge badge-error">✕ Error</span>`;
+        if (r.reason) note = `<div class="res-note">${r.reason}</div>`;
+      }
+
+      const origTime = fmtRange(r.original_start, r.original_end);
+      const newTime  = fmtRange(r.new_start, r.new_end);
+      const origRoom = roomName(r.original_resource);
+      const newRoom  = roomName(r.new_resource);
+
+      return `
+        <tr>
+          <td><div class="res-ref">${r.ref || '—'}</div></td>
+          <td><div class="res-datetime">${origRoom}</div></td>
+          <td><div class="res-datetime">${origTime}</div></td>
+          <td><div class="res-datetime">${newRoom}</div></td>
+          <td><div class="res-datetime">${newTime}</div></td>
+          <td>${badge}${note}</td>
+        </tr>`;
+    }).join('');
+
+    $('resultsCard').classList.add('show');
+    $('resetRow').classList.add('show');
+
+    ['cartId','startDate','startTime','endTime','room','recalcPrice',
+     'chkDate','chkTimes','chkRoom','submitBtn','confirmBtn']
+      .forEach(id => $(id).disabled = true);
+
+    $('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── Room ID → name ───────────────────────────────────────
   const ROOMS = {
     "104777": "Pendragon",
     "105032": "Camelot",
@@ -639,101 +855,36 @@
     return `${start}–${endTime}`;
   }
 
-  // ── Response handler ─────────────────────────────────────
-  function handleResponse(data) {
-    const status = data.status || 'error';
-
-    if (status === 'no_cart') {
-      markInvalid('cartId');
-      showError('<strong>Cart not found</strong>No cart was found with that ID. Please double-check and try again.');
-      $('submitBtn').disabled = false;
-      $('submitBtn').onclick = handleSubmit;
-      return;
-    }
-
-    if (status === 'complete' && Array.isArray(data.reservations)) {
-      renderResults(data.reservations);
-      return;
-    }
-
-    showError('<strong>Unexpected response</strong>Something went wrong. Please try again or contact it@castlelandcentre.com.');
-  }
-
-  function renderResults(reservations) {
-    const countChanged  = reservations.filter(r => r.result === 'changed').length;
-    const countConflict = reservations.filter(r => r.result === 'conflict').length;
-
-    if (countChanged > 0) {
-      $('pillChanged').textContent = `✓ ${countChanged} updated`;
-      $('pillChanged').style.display = '';
-    }
-    if (countConflict > 0) {
-      $('pillConflict').textContent = `⚠ ${countConflict} conflict${countConflict !== 1 ? 's' : ''}`;
-      $('pillConflict').style.display = '';
-    }
-
-    $('resTableBody').innerHTML = reservations.map(r => {
-      let badge, note = '';
-
-      if (r.result === 'changed') {
-        badge = `<span class="badge badge-changed">✓ Changed</span>`;
-        if (r.warning) note = `<div class="res-note">⚠ ${r.warning}</div>`;
-      } else if (r.result === 'conflict') {
-        badge = `<span class="badge badge-conflict">⚠ Conflict</span>`;
-        note = `<div class="res-note">${r.reason || 'Unchanged'}</div>`;
-      } else {
-        badge = `<span class="badge badge-error">✕ Error</span>`;
-        if (r.reason) note = `<div class="res-note">${r.reason}</div>`;
-      }
-
-      const origTime = fmtRange(r.original_start, r.original_end);
-      const newTime  = fmtRange(r.new_start, r.new_end);
-      const origRoom = roomName(r.original_resource);
-      const newRoom  = roomName(r.new_resource);
-
-      return `
-        <tr>
-          <td><div class="res-ref">${r.ref || '—'}</div></td>
-          <td><div class="res-datetime">${origRoom}</div></td>
-          <td><div class="res-datetime">${origTime}</div></td>
-          <td><div class="res-datetime">${newRoom}</div></td>
-          <td><div class="res-datetime">${newTime}</div></td>
-          <td>${badge}${note}</td>
-        </tr>`;
-    }).join('');
-
-    $('resultsCard').classList.add('show');
-    $('resetRow').classList.add('show');
-
-    // Lock the form
-    ['cartId','startDate','startTime','endTime','room','recalcPrice',
-     'chkDate','chkTimes','chkRoom','submitBtn']
-      .forEach(id => $(id).disabled = true);
-  }
-
   // ── Reset ────────────────────────────────────────────────
   function resetForm() {
     clearInvalid();
     hideError();
+    lastPayload = null;
 
-    $('cartId').disabled = false;     $('cartId').value = '';
-    $('startDate').disabled = false;  $('startDate').value = '';
-    $('startTime').disabled = false;  $('startTime').selectedIndex = 0;
-    $('endTime').disabled = false;    $('endTime').selectedIndex = 0;
-    $('room').disabled = false;       $('room').selectedIndex = 0;
+    $('cartId').disabled = false;      $('cartId').value = '';
+    $('startDate').disabled = false;   $('startDate').value = '';
+    $('startTime').disabled = false;   $('startTime').selectedIndex = 0;
+    $('endTime').disabled = false;     $('endTime').selectedIndex = 0;
+    $('room').disabled = false;        $('room').selectedIndex = 0;
     $('recalcPrice').disabled = false; $('recalcPrice').checked = false;
 
     ['chkDate','chkTimes','chkRoom'].forEach(id => {
       $(id).disabled = false;
-      $(id).checked = false;
+      $(id).checked  = false;
     });
 
     ['sectionDate','sectionTimes','sectionRoom']
       .forEach(id => $(id).classList.remove('visible'));
 
     $('submitBtn').disabled = false;
-    $('submitBtn').onclick = handleSubmit;
-    $('btnLabel').textContent = 'Update Bookings';
+    $('submitBtn').onclick  = handleSubmit;
+    $('btnLabel').textContent = 'Check Availability';
+
+    $('confirmBtn').disabled = false;
+    $('confirmLabel').textContent = 'Confirm & Update';
+
+    $('precheckCard').classList.remove('show');
+    $('precheckTableBody').innerHTML = '';
 
     $('resultsCard').classList.remove('show');
     $('pillChanged').style.display  = 'none';
