@@ -682,6 +682,9 @@
     $('resTableHead').innerHTML = `
       <tr>
         <th>Booking ID</th>
+        <th>Original Room</th>
+        <th>Original Time</th>
+        <th>New Room</th>
         <th>New Time</th>
         <th>Status</th>
       </tr>`;
@@ -690,9 +693,13 @@
       const badge = r.available === 'available'
         ? `<span class="badge badge-ok">✓ Available</span>`
         : `<span class="badge badge-conflict">⚠ Conflict</span>`;
+
       return `
         <tr>
-          <td><div class="res-ref"><a href="https://planyo.com/rental.php?id=${r.ref || '—'}"  target="_blank">${r.ref || '—'}</a></div></td>
+          <td><div class="res-ref">${r.ref || '—'}</div></td>
+          <td><div class="res-datetime">${roomName(r.original_resource)}</div></td>
+          <td><div class="res-datetime">${fmtRange(r.original_start, r.original_end)}</div></td>
+          <td><div class="res-datetime">${roomName(r.new_resource)}</div></td>
           <td><div class="res-datetime">${fmtRange(r.new_start, r.new_end)}</div></td>
           <td>${badge}</td>
         </tr>`;
@@ -745,7 +752,7 @@
 
       return `
         <tr>
-          <td><div class="res-ref"><a href="https://planyo.com/rental.php?id=${r.ref || '—'}"  target="_blank">${r.ref || '—'}</a></div></td>
+          <td><div class="res-ref">${r.ref || '—'}</div></td>
           <td><div class="res-datetime">${roomName(r.original_resource)}</div></td>
           <td><div class="res-datetime">${fmtRange(r.original_start, r.original_end)}</div></td>
           <td><div class="res-datetime">${roomName(r.new_resource)}</div></td>
