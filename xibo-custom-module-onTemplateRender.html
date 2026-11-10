@@ -1,0 +1,129 @@
+// id: The id of the widget
+// target: The target element to render
+// items: The items to render
+// properties: The properties for the widget
+// -------------------------------------------
+moment.locale(properties.lang || globalOptions.locale);
+
+var placeholderUrl = "https://dicdevelopmenttrust.com/wp-content/uploads/2026/07/No-Event-Image.jpg";
+
+// Capture everything we need from the RAW items before any substitution happens
+var eventData = [];
+for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    var desc = item.description || "";
+    var found = desc.match(/https?:\/\/\S+/);
+    var url = found ? found.shift() : placeholderUrl;
+    var cleanDesc = found ? desc.replace(url, "").trim() : desc;
+
+    eventData.push({
+        url: url,
+        summary: item.summary || "",
+        start: item.startDate ? moment(item.startDate) : null,
+        end: item.endDate ? moment(item.endDate) : null
+    });
+}
+
+// No data message
+if (eventData.length <= 0 && properties.noDataMessage && properties.noDataMessage !== '') {
+    eventData.push({ summary: properties.noDataMessage, url: placeholderUrl, start: null, end: null });
+}
+
+// Clear container
+$(target).find('#content').empty();
+
+// Build one slide per event, using our own markup for the summary + day/time boxes
+for (var index = 0; index < eventData.length; index++) {
+    var ev = eventData[index];
+
+    var dateLine = ev.start ? ev.start.format('ddd DD/MM') : '';
+    var startLine = ev.start ? ev.start.format('HH:mm') : '';
+    var endLine = ev.end ? ev.end.format('HH:mm') : '';
+
+    var $slide = $('<div>').addClass('event').attr('data-event-index', index);
+
+    var $summaryBox = $('<div class="summary-box"><span class="summary-text"></span></div>');
+    $summaryBox.find('.summary-text').text(ev.summary);
+
+    var $daytimeBox = $(
+    '<div class="daytime-box">' +
+        '<div class="daytime-date">' + dateLine + '</div>' +
+        '<div class="daytime-times">' +
+            '<img class="daytime-icon" src="https://dicdevelopmenttrust.com/wp-content/uploads/2026/07/hourglass.png">' +
+            '<div class="daytime-times-text">' +
+                '<div class="daytime-start">' + startLine + '</div>' +
+                '<div class="daytime-end">' + endLine + '</div>' +
+            '</div>' +
+        '</div>' +
+    '</div>'
+    );
+
+    $slide.append($summaryBox).append($daytimeBox);
+    $(target).find('#content').append($slide);
+}
+
+// Overall widget scaling (unchanged from the original template)
+$(target).xiboLayoutScaler(properties);
+
+// RESTORED: this is what actually drives native paging/rotation between .event elements,
+// using the widget's own configured effect/speed/itemsPerPage settings
+$(target).xiboTextRender(properties, $(target).find('#content > .event'));
+
+// Background image div, reused across renders
+var bg = $(target).find('.event-bg-image');
+if (bg.length === 0) {
+    bg = $('<div class="event-bg-image"></div>').prependTo(target);
+}
+
+// Shrinks font-size until the text fits on one line, never wraps
+function fitTextToBox(el, maxWidth, maxHeight) {
+    el.style.whiteSpace = 'nowrap';
+    el.style.display = 'inline-block';
+
+    var min = 8, max = 400; // search range — raise `max` if your boxes are very large
+    var best = min;
+
+    while (min <= max) {
+        var mid = Math.floor((min + max) / 2);
+        el.style.fontSize = mid + 'px';
+
+        var fitsWidth = el.scrollWidth <= maxWidth;
+        var fitsHeight = !maxHeight || el.scrollHeight <= maxHeight;
+
+        if (fitsWidth && fitsHeight) {
+            best = mid;   // this size works — try going bigger
+            min = mid + 1;
+        } else {
+            max = mid - 1; // too big — back off
+        }
+    }
+
+    el.style.fontSize = best + 'px';
+}
+
+function updateBg() {
+    var $active = $(target).find('#content > .event.cycle-slide-active');
+    if ($active.length === 0) {
+        $active = $(target).find('#content > .event').filter(function () {
+            return $(this).is(':visible');
+        }).first();
+    }
+
+    var idx = $active.length ? $active.data('event-index') : 0;
+    var ev = eventData[idx] || eventData[0];
+    if (!ev) return;
+
+    bg.css('background-image', 'url(' + ev.url + ')');
+
+    var summaryEl = $active.find('.summary-text').get(0);
+    if (summaryEl) {
+        fitTextToBox(summaryEl, 994 - 40, 210 - 20); // box width/height minus your own padding
+    }
+}
+
+updateBg();
+
+if (target.bgInterval) {
+    clearInterval(target.bgInterval);
+}
+target.bgInterval = setInterval(updateBg, 100);
